@@ -19,10 +19,8 @@ class rabbitmq::config {
   $config_shovel                       = $rabbitmq::config_shovel
   $config_shovel_statics               = $rabbitmq::config_shovel_statics
   $default_user                        = $rabbitmq::default_user
-  $default_pass                        = $rabbitmq::default_pass
   $env_config                          = $rabbitmq::env_config
   $env_config_path                     = $rabbitmq::env_config_path
-  $erlang_cookie                       = $rabbitmq::erlang_cookie
   $interface                           = $rabbitmq::interface
   $management_port                     = $rabbitmq::management_port
   $management_ssl                      = $rabbitmq::management_ssl
@@ -44,7 +42,6 @@ class rabbitmq::config {
   $ssl_cert                            = $rabbitmq::ssl_cert
   $ssl_key                             = $rabbitmq::ssl_key
   $ssl_depth                           = $rabbitmq::ssl_depth
-  $ssl_cert_password                   = $rabbitmq::ssl_cert_password
   $ssl_port                            = $rabbitmq::ssl_port
   $ssl_interface                       = $rabbitmq::ssl_interface
   $ssl_management_port                 = $rabbitmq::ssl_management_port
@@ -100,19 +97,25 @@ class rabbitmq::config {
     }
   }
 
-  if $erlang_cookie {
-    if $erlang_cookie =~ String {
+  if $rabbitmq::erlang_cookie {
+    if $rabbitmq::erlang_cookie =~ String {
       $erlang_cookie = Sensitive.new($erlang_cookie)
+    } else {
+      $erlang_cookie = $rabbitmq::erlang_cookie
     }
   }
-  if $ssl_cert_password {
-    if $ssl_cert_password =~ String {
-      $ssl_cert_password = Sensitive.new($ssl_cert_password)
+  if $rabbitmq::ssl_cert_password {
+    if $rabbitmq::ssl_cert_password =~ String {
+      $ssl_cert_password = Sensitive.new($rabbitmq::ssl_cert_password)
+    } else {
+      $ssl_cert_password = $rabbitmq::ssl_cert_password
     }
   }
-  if $default_pass {
-    if $default_pass =~ String {
-      $default_pass = Sensitive.new($default_pass)
+  if $rabbitmq::default_pass {
+    if $rabbitmq::default_pass =~ String {
+      $default_pass = Sensitive.new($rabbitmq::default_pass)
+    } else {
+      $default_pass = $rabbitmq::default_pass
     }
   }
 
