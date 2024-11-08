@@ -70,7 +70,7 @@ class rabbitmq::install::rabbitmqadmin {
       path             => "${rabbitmq::rabbitmq_home}/rabbitmqadmin",
       source           => "${protocol}://${sanitized_ip}:${management_port}/cli/rabbitmqadmin",
       username         => $default_user,
-      password         => $default_pass,
+      password         => $default_pass.unwrap,
       allow_insecure   => true,
       download_options => $archive_options,
       cleanup          => false,

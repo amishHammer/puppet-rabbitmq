@@ -100,6 +100,22 @@ class rabbitmq::config {
     }
   }
 
+  if $erlang_cookie {
+    if $erlang_cookie =~ String {
+      $erlang_cookie = Sensitive.new($erlang_cookie)
+    }
+  }
+  if $ssl_cert_password {
+    if $ssl_cert_password =~ String {
+      $ssl_cert_password = Sensitive.new($ssl_cert_password)
+    }
+  }
+  if $default_pass {
+    if $default_pass =~ String {
+      $default_pass = Sensitive.new($default_pass)
+    }
+  }
+
   # This seems like a sensible default, and I think we have to assign it here
   # to be safe. Use $node_ip_address (which can also be undef) if
   # $management_ip_address is not set.
@@ -236,7 +252,7 @@ class rabbitmq::config {
     fail('You must set the $erlang_cookie value in order to configure clustering.')
   } elsif $erlang_cookie != undef {
     rabbitmq_erlang_cookie { "${rabbitmq_home}/.erlang.cookie":
-      content        => $erlang_cookie,
+      content        => $erlang_cookie.unwrap,
       force          => $wipe_db_on_cookie_change,
       rabbitmq_user  => $rabbitmq_user,
       rabbitmq_group => $rabbitmq_group,
